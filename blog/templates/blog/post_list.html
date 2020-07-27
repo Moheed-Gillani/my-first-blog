@@ -1,16 +1,13 @@
-<html>
-    <title>Moheed-lovers</title>
-    <body>
-        <div>
-            <h1><a href="/">Moheed-blogerr</a></h1>
-        </div>
-        <diV>
-        {% for posts in post %}
-        <p>Published : {{ posts.published_date }} </p>
-        <h1><a href="#">Title: {{ posts.title }}</a></h1>
-        <p>Text:{{ posts.text|linebreaksbr }}</p>
+{% extends 'blog/base.html' %}
 
-        {% endfor %}
-    </diV>
-    </body>
-</html>
+{% block content %}
+    {% for post in post %}
+        <div class="post">
+            <div class="date">
+                {{ post.published_date }}
+            </div>
+            <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2
+            <p>{{ post.text|linebreaksbr }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
