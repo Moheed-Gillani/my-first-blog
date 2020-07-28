@@ -1,7 +1,10 @@
-from django.shortcuts import render,get_object_or_404,redirect
+from django.shortcuts import render,get_object_or_404,redirect,HttpResponse
 from django.utils import timezone
 from .models import Post
-from .forms import PostForm
+from .forms import PostForm,Contactme
+from mysite.settings import EMAIL_HOST_USER
+from django.core.mail import send_mail
+
 
 
 # Create your views here.
@@ -38,7 +41,20 @@ def post_edit(request, pk):
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
 
- 
+def contactme(request):
+    form=Contactme()
+    if request.method == "POST":
+        form =Contactme(request.POST)
+        if form.is_valid():
+            subject=Contactme.subject
+            message=Contactme.message
+            recepient = str(Contactme['email'].value())
+            send_mail(subject,message, EMAIL_HOST_USER, [recepient], fail_silently = False)
+            return HttpResponse("message dileverd successfully")
+    else:
+        form = Contactme()
+    return render(request, 'blog/contact.html', {'form': form})
+     
 
 
 
